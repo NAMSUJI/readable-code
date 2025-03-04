@@ -166,15 +166,18 @@ public class MinesweeperGame {
                 BOARD[row][col] = CLOSED_CELL_SIGN;
             }
         }
+
         // 지뢰 개수
         for (int i = 0; i < LAND_MINE_COUNT; i++) {
             int col = new Random().nextInt(10);
             int row = new Random().nextInt(8);
             LAND_MINES[row][col] = true;
         }
+
         for (int row = 0; row < BOARD_ROW_SIZE; row++) {
             for (int col = 0; col < BOARD_COL_SIZE; col++) {
                 int count = 0;
+
                 if (!isLandMineCell(row, col)) {
                     if (row - 1 >= 0 && col - 1 >= 0 && isLandMineCell(row - 1, col - 1)) {
                         count++;
@@ -203,6 +206,7 @@ public class MinesweeperGame {
                     NEARBY_LAND_MINE_COUNTS[row][col] = count;
                     continue;
                 }
+
                 NEARBY_LAND_MINE_COUNTS[row][col] = 0;
             }
         }
@@ -230,6 +234,7 @@ public class MinesweeperGame {
         } else {
             BOARD[row][col] = OPENED_CELL_SIGN;
         }
+
         open(row - 1, col - 1);
         open(row - 1, col);
         open(row - 1, col + 1);
