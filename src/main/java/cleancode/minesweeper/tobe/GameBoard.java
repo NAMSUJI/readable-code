@@ -3,13 +3,9 @@ package cleancode.minesweeper.tobe;
 import cleancode.minesweeper.tobe.cell.*;
 import cleancode.minesweeper.tobe.gamelevel.GameLevel;
 import cleancode.minesweeper.tobe.position.CellPosition;
-import cleancode.minesweeper.tobe.position.RelativePosition;
+import cleancode.minesweeper.tobe.position.CellPositions;
 
-import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Stream;
 
 import static cleancode.minesweeper.tobe.position.RelativePosition.SURROUND_RELATIVE_POSITIONS;
 
@@ -23,40 +19,55 @@ public class GameBoard {
     }
 
     public void initializeGame() {
-        int rowSize = getRowSize();
-        int colSize = getColSize();
-        for (int row = 0; row < rowSize; row++) {
-            for (int col = 0; col < colSize; col++) {
-                board[row][col] = new EmptyCell();
-            }
-        }
+        CellPositions cellPositions = CellPositions.from(board);
+
+        initializeEmptyCells(cellPositions);
 
         // 지뢰 개수
-        for (int i = 0; i < landMineCount; i++) {
-            try {
-                Random random = SecureRandom.getInstanceStrong();
-                int landMineCol = random.nextInt(colSize);
-                int landMineRow = random.nextInt(rowSize);
-                board[landMineCol][landMineRow] = new LandMineCell();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+        List<CellPosition> landMinePositions = cellPositions.extractRandomPositions(landMineCount);
+        initializeLandMineCells(landMinePositions);
+
+        List<CellPosition> numberPositionsCandidates = cellPositions.subtract(landMinePositions);
+        initializeNumberCells(numberPositionsCandidates);
+    }
+
+    private void initializeEmptyCells(CellPositions cellPositions) {
+        List<CellPosition> allPositions = cellPositions.getPositions();
+
+        // 아래 메서드 생성 시 전달되는 new EmptyCell()이 내부 for문에서 같은 인스턴스로 생성되기 떄문에 문제 발생
+        // updateCellsAt(allPositions, new EmptyCell())
+        for (CellPosition cellPosition : allPositions) {
+            updateCellAt(cellPosition, new EmptyCell());
+        }
+    }
+
+    private void initializeLandMineCells(List<CellPosition> landMinePositions) {
+        // 아래 메서드 생성 시 전달되는 new LandMineCell()이 내부 for문에서 같은 인스턴스로 생성되기 떄문에 문제 발생
+        // updateCellsAt(landMinePositions, new LandMineCell())
+
+        for (CellPosition landMinePosition : landMinePositions) {
+            updateCellAt(landMinePosition, new LandMineCell());
+        }
+    }
+
+    private void initializeNumberCells(List<CellPosition> numberPositionsCandidates) {
+        for (CellPosition candidatePosition : numberPositionsCandidates) {
+            int count = countNearbyLandMines(candidatePosition);
+            if (count != 0) {
+                updateCellAt(candidatePosition, new NumberCell(count));
             }
         }
+    }
 
-        for (int row = 0; row < rowSize; row++) {
-            for (int col = 0; col < colSize; col++) {
-                CellPosition cellPosition = CellPosition.of(row, col);
-                if (isLandMineCell(cellPosition)) {
-                    continue;
-                }
-
-                int count = countNearbyLandMines(cellPosition);
-                if (count == 0) {
-                    continue;
-                }
-                board[row][col] = new NumberCell(count);
-            }
+    /*private void updateCellsAt(List<CellPosition> positions, Cell cell) {
+        // 같은 Cell 인스턴스가 저장이 되기 때문에 문제 발생
+        for (CellPosition position : positions) {
+            updateCellAt(position, cell);
         }
+    }*/
+
+    private void updateCellAt(CellPosition position, Cell cell) {
+        board[position.getRowIndex()][position.getColIndex()] = cell;
     }
 
     public String getSign(CellPosition cellPosition) {
@@ -106,7 +117,8 @@ public class GameBoard {
 
 
     public boolean isAllCellChecked() {
-        return Arrays.stream(board).flatMap(Arrays::stream).allMatch(Cell::isChecked);
+        Cells cells = Cells.from(board);
+        return cells.isAllChecked();
     }
 
     public boolean isInvalidCellPosition(CellPosition cellPosition) {
