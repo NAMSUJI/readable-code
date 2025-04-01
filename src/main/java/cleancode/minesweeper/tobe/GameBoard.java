@@ -70,11 +70,6 @@ public class GameBoard {
         board[position.getRowIndex()][position.getColIndex()] = cell;
     }
 
-    public String getSign(CellPosition cellPosition) {
-        Cell cell = findCell(cellPosition);
-        return cell.getSign();
-    }
-
     public int getRowSize() {
         return board.length;
     }
@@ -126,6 +121,12 @@ public class GameBoard {
         int colSize = getColSize();
 
         return cellPosition.isRowIndexMoreThanOrEqual(rowSize) || cellPosition.isColIndexMoreThanOrEqual(colSize);
+    }
+
+
+    public CellSnapshot getSnapshot(CellPosition cellPosition) {
+        Cell cell = findCell(cellPosition);
+        return cell.getSnapshot();
     }
 
     private Cell findCell(CellPosition cellPosition) {
