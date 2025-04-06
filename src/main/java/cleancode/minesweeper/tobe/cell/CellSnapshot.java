@@ -20,19 +20,19 @@ public class CellSnapshot {
     }
 
     public static CellSnapshot ofFlag() {
-        return new CellSnapshot(CellSnapshotStatus.EMPTY, 0);
+        return new CellSnapshot(CellSnapshotStatus.FLAG, 0);
     }
 
     public static CellSnapshot ofLandMine() {
-        return new CellSnapshot(CellSnapshotStatus.EMPTY, 0);
+        return new CellSnapshot(CellSnapshotStatus.LAND_MINE, 0);
     }
 
     public static CellSnapshot ofNumber(int nearbyLandMineCount) {
-        return new CellSnapshot(CellSnapshotStatus.EMPTY, nearbyLandMineCount);
+        return new CellSnapshot(CellSnapshotStatus.NUMBER, nearbyLandMineCount);
     }
 
     public static CellSnapshot ofUnchekced() {
-        return new CellSnapshot(CellSnapshotStatus.EMPTY, 0);
+        return new CellSnapshot(CellSnapshotStatus.UNCHECKED, 0);
     }
 
     public CellSnapshotStatus getStatus() {

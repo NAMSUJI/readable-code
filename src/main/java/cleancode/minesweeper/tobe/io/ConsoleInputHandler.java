@@ -32,6 +32,6 @@ public class ConsoleInputHandler implements InputHandler {
         int colIndex = boardIndexConverter.getSelectedColIndex(userInput);
         int rowIndex = boardIndexConverter.getSelectedRowIndex(userInput);
 
-        return CellPosition.of(colIndex, rowIndex);
+        return CellPosition.of(rowIndex, colIndex);
     }
 }

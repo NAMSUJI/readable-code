@@ -24,7 +24,7 @@ public class CellPositions {
         int colSize = board[0].length;
         for (int row = 0; row < rowSize; row++) {
             for (int col = 0; col < colSize; col++) {
-                CellPosition cellPosition = new CellPosition(row, col);
+                CellPosition cellPosition = CellPosition.of(row, col);
                 cellPositions.add(cellPosition);
             }
         }
