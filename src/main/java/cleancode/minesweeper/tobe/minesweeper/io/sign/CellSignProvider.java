@@ -5,7 +5,7 @@ import cleancode.minesweeper.tobe.minesweeper.board.cell.CellSnapshotStatus;
 
 import java.util.Arrays;
 
-public enum CellSignProvider implements CellSignProvidable{
+public enum CellSignProvider implements CellSignProvidable {
     EMPTY(CellSnapshotStatus.EMPTY) {
         @Override
         public String provide(CellSnapshot cellSnapshot) {
@@ -35,8 +35,7 @@ public enum CellSignProvider implements CellSignProvidable{
         public String provide(CellSnapshot cellSnapshot) {
             return UNCHECKED_SIGN;
         }
-    }
-    ;
+    };
 
     private final CellSnapshotStatus status;
 

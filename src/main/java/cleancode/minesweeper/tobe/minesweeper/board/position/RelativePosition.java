@@ -7,14 +7,14 @@ public class RelativePosition {
 
     // CellPosition의 한계로 RelativePosition으로 대체
     public static final List<RelativePosition> SURROUND_RELATIVE_POSITIONS = List.of(
-            RelativePosition.of(-1,-1),
-            RelativePosition.of(-1,0),
-            RelativePosition.of(-1,1),
-            RelativePosition.of(0,-1),
-            RelativePosition.of(0,1),
-            RelativePosition.of(1,-1),
-            RelativePosition.of(1,-1),
-            RelativePosition.of(1,-1)
+            RelativePosition.of(-1, -1),
+            RelativePosition.of(-1, 0),
+            RelativePosition.of(-1, 1),
+            RelativePosition.of(0, -1),
+            RelativePosition.of(0, 1),
+            RelativePosition.of(1, -1),
+            RelativePosition.of(1, -1),
+            RelativePosition.of(1, -1)
     );
 
     private final int deltaRow;
